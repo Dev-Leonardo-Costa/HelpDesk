@@ -18,7 +18,7 @@ public enum ProfileEnum {
         return description;
     }
 
-    public static ProfileEnum toEnum(String description){
+    public static ProfileEnum toEnum(String description) {
         return Arrays.stream(ProfileEnum.values())
                 .filter(profileEnum -> profileEnum.getDescription().equals(description))
                 .findFirst()
