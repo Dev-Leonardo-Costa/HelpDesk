@@ -1,9 +1,9 @@
 package br.com.leonardo.service;
 
-import br.com.leonardo.entity.User;
 import br.com.leonardo.mapper.UserMapper;
 import br.com.leonardo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import models.exceptions.ResourceNotFoundException;
 import models.responses.UserResponse;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +16,9 @@ public class UserService {
     private final UserMapper mapper;
 
     public UserResponse findById(final String id){
-        return mapper.fromEntity(userRepository.findById(id).orElse(null));
+        return mapper.fromEntity(userRepository.findById(id).orElseThrow(
+                () -> new ResourceNotFoundException("Object not found. Id: " + id +", Type: " + UserResponse.class.getSimpleName()
+        )));
     }
 
 
