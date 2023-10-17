@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import models.exceptions.StandarError;
 import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
@@ -42,5 +43,5 @@ public interface UserController {
                     schema = @Schema(implementation = StandarError.class)))
     })
     @PostMapping
-    ResponseEntity<Void> save(@RequestBody final CreateUserRequest createUserRequest);
+    ResponseEntity<Void> save(@Valid @RequestBody final CreateUserRequest createUserRequest);
 }
