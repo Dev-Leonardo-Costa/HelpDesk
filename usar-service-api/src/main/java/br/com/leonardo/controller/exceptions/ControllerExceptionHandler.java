@@ -14,8 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.HttpStatus.*;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
@@ -35,11 +34,11 @@ public class ControllerExceptionHandler {
     }
     @ExceptionHandler(DataIntegrityViolationException.class)
     ResponseEntity<StandarError> handleDataIntegrityViolationException(final DataIntegrityViolationException ex, final HttpServletRequest request) {
-        return ResponseEntity.badRequest().body(
+        return ResponseEntity.status(CONFLICT).body(
                         StandarError.builder()
                                 .timestamp(now())
-                                .status(BAD_REQUEST.value())
-                                .error(NOT_FOUND.getReasonPhrase())
+                                .status(CONFLICT.value())
+                                .error(CONFLICT.getReasonPhrase())
                                 .message(ex.getMessage())
                                 .path(request.getRequestURI())
                                 .build()
