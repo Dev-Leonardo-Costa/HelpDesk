@@ -1,12 +1,12 @@
 package models.exceptions;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
-@Builder
 @Getter
+@SuperBuilder
 public class StandarError {
 
     private LocalDateTime timestamp;
