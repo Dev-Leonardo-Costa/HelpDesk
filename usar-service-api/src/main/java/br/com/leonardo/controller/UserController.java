@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import models.exceptions.StandarError;
 import models.requests.CreateUserRequest;
+import models.requests.UpdateUserRequest;
 import models.responses.UserResponse;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -59,4 +60,20 @@ public interface UserController {
     ResponseEntity<List<UserResponse>> findAll();
 
 
+    @Operation(summary = "Find user by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "User updated",content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = UserResponse.class))),
+            @ApiResponse(responseCode = "400", description = "User not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = StandarError.class))),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = StandarError.class))),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                    schema = @Schema(implementation = StandarError.class)))
+    })
+    @PutMapping("/{id}")
+    ResponseEntity<UserResponse> update(
+            @Parameter(description = "user id", required = true, example = "651eba7f38db893ce983ce9b")
+            @PathVariable final String id,
+            @Valid @RequestBody final UpdateUserRequest updateUserRequest);
 }
