@@ -7,7 +7,10 @@ import models.exceptions.ResourceNotFoundException;
 import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -15,10 +18,10 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    private final UserMapper mapper;
+    private final UserMapper userMapper;
 
     public UserResponse findById(final String id) {
-        return mapper.fromEntity(userRepository.findById(id).orElseThrow(
+        return userMapper.fromEntity(userRepository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Object not found. Id: " + id + ", Type: " + UserResponse.class.getSimpleName()
                 )));
     }
@@ -26,7 +29,7 @@ public class UserService {
 
     public void save(CreateUserRequest createUserRequest) {
         verifyEmailAlreadyExists(createUserRequest.email(), null);
-        userRepository.save(mapper.fromRequest(createUserRequest));
+        userRepository.save(userMapper.fromRequest(createUserRequest));
     }
 
     private void verifyEmailAlreadyExists(final String email, final String id) {
@@ -37,4 +40,9 @@ public class UserService {
                 });
     }
 
+    public List<UserResponse> findAll() {
+        return userRepository.findAll()
+                .stream().map(userMapper::fromEntity)
+                .toList();
+    }
 }
