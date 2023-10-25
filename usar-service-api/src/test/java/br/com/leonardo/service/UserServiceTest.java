@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.util.List;
@@ -99,7 +100,27 @@ class UserServiceTest {
         verify(repository).save(any(User.class));
         verify(repository).findByEmail(request.email());
 
+    }
 
+    @Test
+    void whenCallSaveWithExistingEmailThenThrowDataIntegrityViolationException() {
+
+        final var request = genarateMock(CreateUserRequest.class);
+        final var entity = genarateMock(User.class);
+
+        when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
+
+        try {
+            service.save(request);
+        } catch (Exception e) {
+            assertEquals(DataIntegrityViolationException.class, e.getClass());
+            assertEquals("Email [" + request.email() + "] already exists.", e.getMessage());
+        }
+
+        verify(repository).findByEmail(request.email());
+        verify(mapper, never()).fromRequest(request);
+        verify(encoder, never()).encode(request.password());
+        verify(repository, never()).save(any(User.class));
     }
 
     @Test
