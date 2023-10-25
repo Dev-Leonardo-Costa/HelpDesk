@@ -4,6 +4,7 @@ import br.com.leonardo.entity.User;
 import br.com.leonardo.mapper.UserMapper;
 import br.com.leonardo.repository.UserRepository;
 import models.exceptions.ResourceNotFoundException;
+import models.requests.CreateUserRequest;
 import models.responses.UserResponse;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,8 +13,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.util.List;
 import java.util.Optional;
 
+import static br.com.leonardo.creator.CreatorUtils.genarateMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -32,7 +35,6 @@ class UserServiceTest {
     private UserMapper mapper;
     @Mock
     private BCryptPasswordEncoder encoder;
-
 
 
     @Test
@@ -67,12 +69,37 @@ class UserServiceTest {
     }
 
     @Test
-    void save() {
+    void whenFindAllThenReturnListUserResponse() {
+        when(repository.findAll()).thenReturn(List.of(new User(), new User()));
+        when(mapper.fromEntity(any(User.class))).thenReturn(genarateMock(UserResponse.class));
 
+        final var response = service.findAll();
+
+        assertNotNull(response);
+        assertEquals(2, response.size());
+        assertEquals(UserResponse.class, response.get(0).getClass());
+
+        verify(repository, times(1)).findAll();
+        verify(mapper, times(2)).fromEntity(any(User.class));
     }
 
     @Test
-    void findAll() {
+    void whenCallSaveThenReturnSuccess() {
+        final var request = genarateMock(CreateUserRequest.class);
+
+        when(mapper.fromRequest(any())).thenReturn(new User());
+        when(encoder.encode(anyString())).thenReturn("encoded");
+        when(repository.save(any(User.class))).thenReturn(new User());
+        when(repository.findByEmail(anyString())).thenReturn(Optional.empty());
+
+        service.save(request);
+
+        verify(mapper).fromRequest(request);
+        verify(encoder).encode(request.password());
+        verify(repository).save(any(User.class));
+        verify(repository).findByEmail(request.email());
+
+
     }
 
     @Test
