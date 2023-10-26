@@ -1,24 +1,24 @@
 package br.com.leonardo.controller.impl;
 
-import br.com.leonardo.creator.CreatorUtils;
 import br.com.leonardo.entity.User;
 import br.com.leonardo.repository.UserRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import models.requests.CreateUserRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.util.concurrent.ListenableFutureAdapter;
-
 
 import java.util.List;
 
 import static br.com.leonardo.creator.CreatorUtils.genarateMock;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -81,6 +81,29 @@ class UserControllerImplTest {
 
         repository.deleteAll(List.of(entity1, entity2));
 
+    }
+
+    @Test
+    @DisplayName("Save new user sucess")
+    void testSaveWithSuccess() throws Exception {
+        final var validEmail = "test123@gmail.com";
+        final var request = genarateMock(CreateUserRequest.class).withEmail(validEmail);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request)))
+                .andExpect(status().isCreated());
+
+        repository.deleteByEmail(validEmail);
+
+    }
+
+    private String toJson(final Object object) {
+        try {
+            return new ObjectMapper().writeValueAsString(object);
+        } catch (final Exception e) {
+            throw new RuntimeException("Error to convert object to json", e);
+        }
     }
 
 }
