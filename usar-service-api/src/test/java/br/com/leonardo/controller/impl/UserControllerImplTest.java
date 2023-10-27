@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static br.com.leonardo.creator.CreatorUtils.genarateMock;
+import static org.springframework.http.HttpStatus.CONFLICT;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -86,7 +87,7 @@ class UserControllerImplTest {
     @Test
     @DisplayName("Save new user sucess")
     void testSaveWithSuccess() throws Exception {
-        final var validEmail = "test123@gmail.com";
+        final var validEmail = "test1234@gmail.com";
         final var request = genarateMock(CreateUserRequest.class).withEmail(validEmail);
 
         mockMvc.perform(post("/api/users")
@@ -95,6 +96,28 @@ class UserControllerImplTest {
                 .andExpect(status().isCreated());
 
         repository.deleteByEmail(validEmail);
+    }
+    @Test
+    @DisplayName("Save not user conflict email")
+    void testSaveUserWithConflictEmail() throws Exception {
+        final var validEmail = "test123@gmail.com";
+        final var entity = genarateMock(User.class).withEmail(validEmail);
+
+        repository.save(entity);
+
+        final var request = genarateMock(CreateUserRequest.class).withEmail(validEmail);
+
+        mockMvc.perform(post("/api/users")
+                .contentType(APPLICATION_JSON)
+                .content(toJson(request)))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value("Email [" + validEmail + "] already exists."))
+                .andExpect(jsonPath("$.error").value("Conflict"))
+                .andExpect(jsonPath("$.path").value("/api/users"))
+                .andExpect(jsonPath("$.status").value(CONFLICT.value()))
+                .andExpect(jsonPath("$.timestamp").isNotEmpty());
+
+        repository.deleteById(entity.getId());
 
     }
 
