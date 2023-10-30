@@ -9,7 +9,7 @@ public class CreatorUtils {
 
     private static final PodamFactory podamFactory = new PodamFactoryImpl();
 
-    public static <T> T genarateMock(final Class<T> clazz) {
+    public static <T> T generateMock(final Class<T> clazz) {
         return podamFactory.manufacturePojo(clazz);
     }
 

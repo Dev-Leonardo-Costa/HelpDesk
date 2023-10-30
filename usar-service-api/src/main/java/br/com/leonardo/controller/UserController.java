@@ -60,7 +60,7 @@ public interface UserController {
     ResponseEntity<List<UserResponse>> findAll();
 
 
-    @Operation(summary = "Find user by id")
+    @Operation(summary = "Update user")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "User updated",content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
                     schema = @Schema(implementation = UserResponse.class))),

@@ -18,7 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 import java.util.Optional;
 
-import static br.com.leonardo.creator.CreatorUtils.genarateMock;
+import static br.com.leonardo.creator.CreatorUtils.generateMock;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -43,7 +43,7 @@ class UserServiceTest {
     void whenCallFindByIdWithValidIdThenReturnUserResponse() {
 
         when(repository.findById(anyString())).thenReturn(Optional.of(new User()));
-        when(mapper.fromEntity(any(User.class))).thenReturn(genarateMock(UserResponse.class));
+        when(mapper.fromEntity(any(User.class))).thenReturn(generateMock(UserResponse.class));
 
         final var response = service.findById("1");
 
@@ -73,7 +73,7 @@ class UserServiceTest {
     @Test
     void whenFindAllThenReturnListUserResponse() {
         when(repository.findAll()).thenReturn(List.of(new User(), new User()));
-        when(mapper.fromEntity(any(User.class))).thenReturn(genarateMock(UserResponse.class));
+        when(mapper.fromEntity(any(User.class))).thenReturn(generateMock(UserResponse.class));
 
         final var response = service.findAll();
 
@@ -87,7 +87,7 @@ class UserServiceTest {
 
     @Test
     void whenCallSaveThenReturnSuccess() {
-        final var request = genarateMock(CreateUserRequest.class);
+        final var request = generateMock(CreateUserRequest.class);
 
         when(mapper.fromRequest(any())).thenReturn(new User());
         when(encoder.encode(anyString())).thenReturn("encoded");
@@ -106,8 +106,8 @@ class UserServiceTest {
     @Test
     void whenCallSaveWithExistingEmailThenThrowDataIntegrityViolationException() {
 
-        final var request = genarateMock(CreateUserRequest.class);
-        final var entity = genarateMock(User.class);
+        final var request = generateMock(CreateUserRequest.class);
+        final var entity = generateMock(User.class);
 
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
 
@@ -126,7 +126,7 @@ class UserServiceTest {
 
     @Test
     void whenCalUpdateWithInvalidIdTheThenThrowResourceNotFoundException() {
-        final var request = genarateMock(UpdateUserRequest.class);
+        final var request = generateMock(UpdateUserRequest.class);
 
         when(repository.findById(anyString())).thenReturn(Optional.empty());
 
@@ -147,8 +147,8 @@ class UserServiceTest {
     @Test
     void whenCallUpdateWithValidIdThenEmailTheThrowDataIntegrityViolationException() {
 
-        final var request = genarateMock(UpdateUserRequest.class);
-        final var entity = genarateMock(User.class);
+        final var request = generateMock(UpdateUserRequest.class);
+        final var entity = generateMock(User.class);
 
         when(repository.findById(anyString())).thenReturn(Optional.of(entity));
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
@@ -171,8 +171,8 @@ class UserServiceTest {
     void whenCallUpdateWithValidParamsThenGetSuccess() {
 
         final var id = "1";
-        final var request = genarateMock(UpdateUserRequest.class);
-        final var entity = genarateMock(User.class).withId(id);
+        final var request = generateMock(UpdateUserRequest.class);
+        final var entity = generateMock(User.class).withId(id);
 
         when(repository.findById(anyString())).thenReturn(Optional.of(entity));
         when(repository.findByEmail(anyString())).thenReturn(Optional.of(entity));
