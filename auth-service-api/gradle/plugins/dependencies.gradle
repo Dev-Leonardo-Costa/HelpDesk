@@ -33,7 +33,7 @@ dependencies {
         because('Starter para validação de dados')
     }
 
-    implementation ('br.com.leonardo:hd-commons-lib:1.0.0') {
+    implementation ('br.com.leonardocosta:hd-commons-lib:1.0.0') {
         because('Lib para compartilhar código comum entre os projetos')
     }
 
