@@ -9,13 +9,11 @@ import jakarta.validation.Valid;
 import models.exceptions.StandarError;
 import models.requests.AuthenticateRequest;
 import models.responses.AuthenticateResponse;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequestMapping("/api/auth")
