@@ -27,7 +27,7 @@ public interface AuthController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content(mediaType = APPLICATION_JSON_VALUE, schema = @Schema(implementation = StandarError.class)))
     })
     @PostMapping("/login")
-    ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody AuthenticateRequest request);
+    ResponseEntity<AuthenticateResponse> authenticate(@Valid @RequestBody AuthenticateRequest request) throws Exception;
 
 
 }

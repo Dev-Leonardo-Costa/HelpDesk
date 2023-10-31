@@ -16,11 +16,12 @@ public class SecurityConfig {
 
         return httpSecurity.csrf().disable()
                 .authorizeHttpRequests(http -> http.requestMatchers(
-                        new AntPathRequestMatcher("/swagger-ui.html"),
-                        new AntPathRequestMatcher("/v3/api-docs/**"),
-                        new AntPathRequestMatcher("/api/auth/login/**")
-                        ).permitAll()
-                        .anyRequest().authenticated()
+                                        new AntPathRequestMatcher("/swagger-ui/**"),
+                                        new AntPathRequestMatcher("/swagger-ui.html"),
+                                        new AntPathRequestMatcher("/v3/api-docs/**"),
+                                        new AntPathRequestMatcher("/api/auth/login/**")
+                                ).permitAll()
+                                .anyRequest().authenticated()
                 ).sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .build();
@@ -28,7 +29,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder(){
+    public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
