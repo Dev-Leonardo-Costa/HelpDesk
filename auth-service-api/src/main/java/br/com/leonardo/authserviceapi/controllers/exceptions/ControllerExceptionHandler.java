@@ -1,16 +1,10 @@
 package br.com.leonardo.authserviceapi.controllers.exceptions;
 
 import jakarta.servlet.http.HttpServletRequest;
-import models.exceptions.ResourceNotFoundException;
 import models.exceptions.StandarError;
 import models.exceptions.ValidationException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
-<<<<<<< HEAD
 import org.springframework.security.authentication.BadCredentialsException;
-=======
->>>>>>> origin/develop
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -19,7 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.ArrayList;
 
 import static java.time.LocalDateTime.now;
-import static org.springframework.http.HttpStatus.*;
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 @ControllerAdvice
 public class ControllerExceptionHandler {
