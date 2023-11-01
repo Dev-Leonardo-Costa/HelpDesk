@@ -24,7 +24,6 @@ import static org.springframework.http.HttpStatus.*;
 @ControllerAdvice
 public class ControllerExceptionHandler {
 
-<<<<<<< HEAD
     @ExceptionHandler(BadCredentialsException.class)
     ResponseEntity<StandarError> handleBadCredentialsException(final BadCredentialsException ex, final HttpServletRequest request) {
         return ResponseEntity.status(UNAUTHORIZED)
@@ -33,21 +32,12 @@ public class ControllerExceptionHandler {
                                 .timestamp(now())
                                 .status(UNAUTHORIZED.value())
                                 .error(UNAUTHORIZED.getReasonPhrase())
-=======
-    @ExceptionHandler(UsernameNotFoundException.class)
-    ResponseEntity<StandarError> handleUsernameNotFoundException(final UsernameNotFoundException ex, final HttpServletRequest request) {
-        return ResponseEntity.status(NOT_FOUND)
-                .body(
-                        StandarError.builder()
-                                .timestamp(now())
-                                .status(NOT_FOUND.value())
-                                .error(NOT_FOUND.getReasonPhrase())
->>>>>>> origin/develop
                                 .message(ex.getMessage())
                                 .path(request.getRequestURI())
                                 .build()
                 );
-    }
+    };
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     ResponseEntity<ValidationException> handleMethodArgumentNotValidException(final MethodArgumentNotValidException ex, final HttpServletRequest request) {
