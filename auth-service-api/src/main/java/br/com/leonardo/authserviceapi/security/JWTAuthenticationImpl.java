@@ -1,5 +1,6 @@
-package br.com.leonardo.authserviceapi.security.dtos;
+package br.com.leonardo.authserviceapi.security;
 
+import br.com.leonardo.authserviceapi.security.dtos.UserDetailsDTO;
 import br.com.leonardo.authserviceapi.utils.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -37,8 +38,8 @@ public class JWTAuthenticationImpl {
         log.info("Successfully authenticated user: {}", dto.getUsername());
         final  var token = jwtUtils.generateToken(dto);
         return AuthenticateResponse.builder()
-                .type("JWT")
-                .token("Bearer " + token)
+                .type("Bearer")
+                .token(token)
                 .build();
     }
 }
