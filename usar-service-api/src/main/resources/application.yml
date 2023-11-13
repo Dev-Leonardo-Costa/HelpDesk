@@ -1,12 +1,3 @@
 spring:
   application:
     name: 'user-service-api'
-  data:
-    mongodb:
-      uri: mongodb+srv://helpdesk:helpdesk@cluster0.9arjcny.mongodb.net/helpdeskdb?retryWrites=true&w=majority
-      auto-index-creation: true
-springdoc:
-  openapi:
-    title: 'User Service API'
-    description: 'Document for User Service API'
-    version: '1.0.0'
